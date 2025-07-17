@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import Category, Destination, WeatherInfo, Favorite, SearchHistory
 from .serializers import CategorySerializer, DestinationSerializer, WeatherInfoSerializer, FavoriteSerializer, SearchHistorySerializer
 from .utils import fetch_weather_data
@@ -12,7 +12,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class DestinationViewSet(viewsets.ModelViewSet):
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
-    permission_classes = [IsAuthenticated]  # Usuarios autenticados pueden ver destinos
+    permission_classes = [AllowAny]  # Usuarios autenticados pueden ver destinos
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
