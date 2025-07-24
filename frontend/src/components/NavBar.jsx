@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function NavBar() {
-  const [username, setUsername] = useState(null);
+  const [firstName, setFirstName] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    const storedUsername = localStorage.getItem('username');
-    if (token && storedUsername) {
-      setUsername(storedUsername);
+    const storedFirstName = localStorage.getItem('first_name');
+    if (token && storedFirstName) {
+      setFirstName(storedFirstName);
     } else if (token) {
       axios.get('/api/user/', {
         headers: {
@@ -18,15 +18,15 @@ function NavBar() {
         },
       })
         .then(response => {
-          setUsername(response.data.username);
-          localStorage.setItem('username', response.data.username);
+          setFirstName(response.data.first_name);
+          localStorage.setItem('first_name', response.data.first_name);
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
-          localStorage.removeItem('username');
-          setUsername(null);
+          localStorage.removeItem('first_name');
+          setFirstName(null);
         });
     }
   }, []);
@@ -34,8 +34,8 @@ function NavBar() {
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    localStorage.removeItem('username');
-    setUsername(null);
+    localStorage.removeItem('first_name');
+    setFirstName(null);
     navigate('/');
   };
 
@@ -44,10 +44,10 @@ function NavBar() {
       <div className="container nav">
         <Link to="/" className="nav-logo">ViajaFacil</Link>
         <nav className="nav-links">
-          {username ? (
+          {firstName ? (
             <>
               <span className="text-white text-sm" style={{ marginRight: '16px' }}>
-                Hola {username}!
+                Hola {firstName}!
               </span>
               <button
                 onClick={handleLogout}

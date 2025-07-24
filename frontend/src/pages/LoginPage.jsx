@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import { getCookie } from '../utils/csrf';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -18,10 +19,15 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login/', formData);
+      const csrftoken = getCookie('csrftoken');
+      const response = await axios.post('/api/login/', formData, {
+        headers: {
+          'X-CSRFToken': csrftoken,
+        },
+      });
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
-      localStorage.setItem('username', response.data.username); // Store username
+      localStorage.setItem('username', response.data.username);
       navigate('/');
     } catch (err) {
       setError('Credenciales inválidas. Intenta de nuevo.');

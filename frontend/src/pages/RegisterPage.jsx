@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import { getCookie } from '../utils/csrf';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -20,7 +21,12 @@ function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/register/', formData);
+      const csrftoken = getCookie('csrftoken');
+      await axios.post('/api/register/', formData, {
+        headers: {
+          'X-CSRFToken': csrftoken,
+        },
+      });
       navigate('/login');
     } catch (err) {
       setError('Error al registrar. Verifica los datos e intenta de nuevo.');
