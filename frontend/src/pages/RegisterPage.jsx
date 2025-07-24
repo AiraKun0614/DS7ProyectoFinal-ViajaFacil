@@ -37,62 +37,68 @@ function RegisterPage() {
   return (
     <div>
       <NavBar />
-      <div style={{ minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="card form-container">
-          <h1 className="text-3xl text-center mb-6">Registrarse</h1>
-          {error && <p className="error">{error}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="form-label" htmlFor="first_name">Nombre</label>
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
+      <main className="container py-4">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <h1 className="card-title text-center mb-4">Registrarse</h1>
+                {error && <div className="alert alert-danger">{error}</div>}
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="first_name" className="form-label">Nombre</label>
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="username" className="form-label">Nombre de usuario</label>
+                    <input
+                      type="text"
+                      name="username"
+                      value={formData.username}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Correo electrónico</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Contraseña</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary w-100">Registrarse</button>
+                </form>
+                <p className="text-center text-muted mt-3">
+                  ¿Ya tienes cuenta? <Link to="/login" className="text-primary">Inicia sesión</Link>
+                </p>
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="form-label" htmlFor="username">Nombre de usuario</label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="form-label" htmlFor="email">Correo electrónico</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="mb-6">
-              <label className="form-label" htmlFor="password">Contraseña</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <button type="submit" className="btn-primary" style={{ width: '100%' }}>Registrarse</button>
-          </form>
-          <p className="text-center text-gray-600 mt-4">
-            ¿Ya tienes cuenta? <Link to="/login" style={{ color: '#1E90FF', textDecoration: 'underline' }}>Inicia sesión</Link>
-          </p>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

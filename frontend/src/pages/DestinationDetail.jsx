@@ -7,8 +7,8 @@ import NavBar from '../components/NavBar';
 const mapContainerStyle = {
   width: '100%',
   height: '400px',
-  borderRadius: '8px',
-  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  borderRadius: '12px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
 };
 
 function DestinationDetail() {
@@ -19,12 +19,10 @@ function DestinationDetail() {
   const token = localStorage.getItem('access_token');
 
   useEffect(() => {
-    // Cargar detalles del destino
     axios.get(`/api/destinations/${id}/`)
       .then(response => setDestination(response.data))
       .catch(error => console.error('Error fetching destination:', error));
 
-    // Verificar si el destino es favorito
     if (token) {
       axios.get('/api/favorites/', {
         headers: { Authorization: `Bearer ${token}` },
@@ -45,7 +43,6 @@ function DestinationDetail() {
 
     try {
       if (isFavorite) {
-        // Eliminar favorito
         const favorite = await axios.get('/api/favorites/', {
           headers: { Authorization: `Bearer ${token}` },
         }).then(res => res.data.find(fav => fav.destination.id === parseInt(id)));
@@ -54,7 +51,6 @@ function DestinationDetail() {
         });
         setIsFavorite(false);
       } else {
-        // Agregar favorito
         await axios.post('/api/favorites/', { destination_id: id }, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -67,8 +63,8 @@ function DestinationDetail() {
 
   if (!destination) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p className="text-gray-500 text-lg">Cargando...</p>
+      <div className="d-flex align-items-center justify-content-center min-vh-100">
+        <p className="text-muted fs-4">Cargando...</p>
       </div>
     );
   }
@@ -81,46 +77,55 @@ function DestinationDetail() {
   return (
     <div>
       <NavBar />
-      <main className="container">
-        <div className="grid">
-          <div className="card">
-            <img
-              src={destination.image || 'https://via.placeholder.com/400?text=Sin+Imagen'}
-              alt={destination.name}
-              style={{ width: '100%', height: '256px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
-            />
-            <div style={{ padding: '24px', position: 'relative' }}>
-              <span
-                className={`favorite-star ${isFavorite ? 'filled' : ''}`}
-                onClick={handleToggleFavorite}
-                style={{ position: 'absolute', top: '24px', right: '24px' }}
-              >
-                ★
-              </span>
-              <p className="text-base mb-4" style={{ color: '#4B5563' }}>{destination.description}</p>
-              <p className="text-sm" style={{ color: '#6B7280' }}>Categoría: {destination.category?.name || 'Sin categoría'}</p>
-              {destination.weather.length > 0 && (
-                <div className="weather-info mt-4">
-                  <h2 className="text-lg mb-2" style={{ color: '#2ECC71' }}>Clima Actual</h2>
-                  <p style={{ color: '#1F2937' }}>Temperatura: {destination.weather[0].temperature}°C</p>
-                  <p style={{ color: '#1F2937' }}>Condición: {destination.weather[0].condition}</p>
-                  <p style={{ color: '#1F2937' }}>Humedad: {destination.weather[0].humidity}%</p>
-                  <p style={{ color: '#1F2937' }}>Velocidad del viento: {destination.weather[0].wind_speed} m/s</p>
-                </div>
-              )}
+      <main className="container py-4">
+        <div className="row g-4">
+          <div className="col-lg-6">
+            <div className="card h-100">
+              <img
+                src={destination.image || 'https://via.placeholder.com/400?text=Sin+Imagen'}
+                alt={destination.name}
+                className="card-img-top"
+                style={{ height: '256px', objectFit: 'cover' }}
+              />
+              <div className="card-body position-relative">
+                <svg
+                  className={`favorite-star ${isFavorite ? 'filled' : ''}`}
+                  onClick={handleToggleFavorite}
+                  style={{ position: 'absolute', top: '16px', right: '16px' }}
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <h1 className="card-title">{destination.name}</h1>
+                <p className="card-text">{destination.description}</p>
+                <p className="card-text text-muted">Categoría: {destination.category?.name || 'Sin categoría'}</p>
+                {destination.weather.length > 0 && (
+                  <div className="weather-info mt-3">
+                    <h2 className="h5 text-success">Clima Actual</h2>
+                    <p>Temperatura: {destination.weather[0].temperature}°C</p>
+                    <p>Condición: {destination.weather[0].condition}</p>
+                    <p>Humedad: {destination.weather[0].humidity}%</p>
+                    <p>Velocidad del viento: {destination.weather[0].wind_speed} m/s</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="card" style={{ padding: '24px' }}>
-            <h2 className="text-lg mb-4">Ubicación</h2>
-            <LoadScript googleMapsApiKey="AIzaSyB3653Nw0EzJT0TMhQ5eRz3HHJYPx3gbj8">
-              <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                center={center}
-                zoom={10}
-              >
-                <Marker position={center} />
-              </GoogleMap>
-            </LoadScript>
+          <div className="col-lg-6">
+            <div className="card h-100">
+              <div className="card-body">
+                <h2 className="card-title h5">Ubicación</h2>
+                <LoadScript googleMapsApiKey="AIzaSyB3653Nw0EzJT0TMhQ5eRz3HHJYPx3gbj8">
+                  <GoogleMap
+                    mapContainerStyle={mapContainerStyle}
+                    center={center}
+                    zoom={10}
+                  >
+                    <Marker position={center} />
+                  </GoogleMap>
+                </LoadScript>
+              </div>
+            </div>
           </div>
         </div>
       </main>

@@ -40,36 +40,55 @@ function NavBar() {
   };
 
   return (
-    <header className="header">
-      <div className="container nav">
-        <Link to="/" className="nav-logo">ViajaFacil</Link>
-        <nav className="nav-links">
-          {firstName ? (
-            <>
-              <Link to="/profile" className="text-white text-sm" style={{ marginRight: '16px' }}>
-                Hola {firstName}!
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="btn-primary"
-                style={{ padding: '8px 16px', fontSize: '0.875rem' }}
-              >
-                Cerrar Sesión
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/register" className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>
-                Registrarse
-              </Link>
-              <Link to="/login" className="btn-primary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>
-                Iniciar Sesión
-              </Link>
-            </>
-          )}
-        </nav>
+    <nav className="navbar navbar-expand-lg navbar-light">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">ViajaFacil</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            {firstName ? (
+              <li className="nav-item d-flex align-items-center">
+                <Link className="nav-link" to="/profile">
+                  <svg className="me-2" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                  </svg>
+                  Hola {firstName}!
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-primary btn-sm ms-3"
+                >
+                  Cerrar Sesión
+                </button>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="btn btn-primary btn-sm me-2" to="/register">
+                    Registrarse
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="btn btn-primary btn-sm" to="/login">
+                    Iniciar Sesión
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
       </div>
-    </header>
+    </nav>
   );
 }
 

@@ -11,36 +11,45 @@ h1, h2, h3 {
   color: #1E90FF;
 }
 
+/* Personalizar Bootstrap */
+.navbar {
+  background-color: #1E90FF !important;
+}
+
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+  color: #E3F2FD !important;
+}
+
 .card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary {
   background-color: #1E90FF;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 8px;
-  text-decoration: none;
-  display: inline-block;
-  transition: background-color 0.2s ease;
-  text-align: center;
+  border-color: #1E90FF;
 }
 
 .btn-primary:hover {
   background-color: #1565C0;
+  border-color: #1565C0;
 }
 
 .weather-info {
   background-color: #E7F9E7;
   padding: 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #C6EBC6;
 }
 
@@ -50,66 +59,45 @@ h1, h2, h3 {
   padding: 24px;
 }
 
-.header {
+.favorite-star {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  fill: #D1D5DB;
+  transition: fill 0.2s ease;
+}
+
+.favorite-star.filled {
+  fill: #FFD700;
+}
+
+.favorite-star:hover {
+  fill: #FBBF24;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+
+.search-input {
+  border-radius: 8px 0 0 8px;
+}
+
+.search-button {
+  border-radius: 0 8px 8px 0;
   background-color: #1E90FF;
-  color: white;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  text-decoration: none;
-}
-
-.nav-logo:hover {
-  color: #E3F2FD;
-}
-
-.nav-links {
-  display: flex;
-  gap: 16px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.form-container {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #D1D5DB;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 1rem;
-}
-
-.form-input:focus {
-  outline: none;
   border-color: #1E90FF;
-  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
 }
 
-.form-label {
-  display: block;
-  color: #1F2937;
-  margin-bottom: 8px;
-  font-weight: 500;
+.search-button:hover {
+  background-color: #1565C0;
+  border-color: #1565C0;
+}
+
+.form-control:focus {
+  border-color: #1E90FF;
+  box-shadow: 0 0 0 0.2rem rgba(30, 144, 255, 0.25);
 }
 
 .error {
@@ -118,70 +106,21 @@ h1, h2, h3 {
   margin-bottom: 16px;
 }
 
-.favorite-star {
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: #D1D5DB;
-  transition: color 0.2s ease;
+.profile-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.favorite-star.filled {
-  color: #FFD700;
-}
-
-.favorite-star:hover {
-  color: #FBBF24;
-}
-
-.search-container {
-  display: flex;
-  max-width: 600px;
-  margin: 0 auto 24px;
-  gap: 8px;
-}
-
-.search-input {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #D1D5DB;
-  border-radius: 8px;
-  font-size: 1rem;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #1E90FF;
-  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
-}
-
-.search-button {
-  background-color: #1E90FF;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
-}
-
-.search-button:hover {
-  background-color: #1565C0;
-}
-
-@media (max-width: 640px) {
+@media (max-width: 576px) {
   .container {
     padding: 16px;
   }
-  .nav {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .nav-links {
-    flex-direction: column;
-    gap: 8px;
-  }
   .search-container {
     flex-direction: column;
+  }
+  .search-input, .search-button {
+    border-radius: 8px;
   }
 }
