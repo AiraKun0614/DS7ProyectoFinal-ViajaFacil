@@ -30,7 +30,7 @@ class WeatherInfoViewSet(viewsets.ReadOnlyModelViewSet):
 
 class FavoriteViewSet(viewsets.ModelViewSet):
     serializer_class = FavoriteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         return Favorite.objects.filter(user=self.request.user)
@@ -38,15 +38,34 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.user != request.user:
+            return Response({"error": "No tienes permiso para eliminar este favorito"}, status=status.HTTP_403_FORBIDDEN)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class SearchHistoryViewSet(viewsets.ModelViewSet):
     serializer_class = SearchHistorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
-        return SearchHistory.objects.filter(user=self.request.user)
+        return SearchHistory.objects.filter(user=self.request.user).order_by('search_date')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        # Permitir eliminar un solo registro o todo el historial
+        if 'pk' in kwargs:
+            instance = self.get_object()
+            if instance.user != request.user:
+                return Response({"error": "No tienes permiso para eliminar este historial"}, status=status.HTTP_403_FORBIDDEN)
+            self.perform_destroy(instance)
+        else:
+            SearchHistory.objects.filter(user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class RegisterView(APIView):

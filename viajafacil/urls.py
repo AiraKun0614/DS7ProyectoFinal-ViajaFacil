@@ -20,12 +20,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from tourismapp.views import DestinationViewSet, RegisterView, LoginView, UserView
+from tourismapp.views import DestinationViewSet, RegisterView, LoginView, UserView, FavoriteViewSet, SearchHistoryViewSet
 from django.views.generic import TemplateView
 
 
 router = DefaultRouter()
 router.register(r'destinations', DestinationViewSet)
+router.register(r'favorites', FavoriteViewSet, basename='favorites')
+router.register(r'search-history', SearchHistoryViewSet, basename='search-history')
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

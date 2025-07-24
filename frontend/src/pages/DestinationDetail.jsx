@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import NavBar from '../components/NavBar';
@@ -14,12 +14,56 @@ const mapContainerStyle = {
 function DestinationDetail() {
   const { id } = useParams();
   const [destination, setDestination] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem('access_token');
 
   useEffect(() => {
+    // Cargar detalles del destino
     axios.get(`/api/destinations/${id}/`)
       .then(response => setDestination(response.data))
       .catch(error => console.error('Error fetching destination:', error));
-  }, [id]);
+
+    // Verificar si el destino es favorito
+    if (token) {
+      axios.get('/api/favorites/', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(response => {
+          const isFav = response.data.some(fav => fav.destination.id === parseInt(id));
+          setIsFavorite(isFav);
+        })
+        .catch(error => console.error('Error fetching favorites:', error));
+    }
+  }, [id, token]);
+
+  const handleToggleFavorite = async () => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        // Eliminar favorito
+        const favorite = await axios.get('/api/favorites/', {
+          headers: { Authorization: `Bearer ${token}` },
+        }).then(res => res.data.find(fav => fav.destination.id === parseInt(id)));
+        await axios.delete(`/api/favorites/${favorite.id}/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsFavorite(false);
+      } else {
+        // Agregar favorito
+        await axios.post('/api/favorites/', { destination_id: id }, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
 
   if (!destination) {
     return (
@@ -45,7 +89,14 @@ function DestinationDetail() {
               alt={destination.name}
               style={{ width: '100%', height: '256px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
             />
-            <div style={{ padding: '24px' }}>
+            <div style={{ padding: '24px', position: 'relative' }}>
+              <span
+                className={`favorite-star ${isFavorite ? 'filled' : ''}`}
+                onClick={handleToggleFavorite}
+                style={{ position: 'absolute', top: '24px', right: '24px' }}
+              >
+                ★
+              </span>
               <p className="text-base mb-4" style={{ color: '#4B5563' }}>{destination.description}</p>
               <p className="text-sm" style={{ color: '#6B7280' }}>Categoría: {destination.category?.name || 'Sin categoría'}</p>
               {destination.weather.length > 0 && (
@@ -78,4 +129,3 @@ function DestinationDetail() {
 }
 
 export default DestinationDetail;
-

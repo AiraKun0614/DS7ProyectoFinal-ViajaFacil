@@ -15,13 +15,14 @@ class WeatherInfoSerializer(serializers.ModelSerializer):
 class DestinationSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     weather = WeatherInfoSerializer(many=True, read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True, allow_null=True)
     category_id = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), source='category', write_only=True
     )
 
     class Meta:
         model = Destination
-        fields = ['id', 'name', 'description', 'latitude', 'longitude', 'category', 'category_id', 'image', 'weather']
+        fields = ['id', 'name', 'description', 'latitude', 'longitude', 'category', 'category_id', 'category_name', 'image', 'weather']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

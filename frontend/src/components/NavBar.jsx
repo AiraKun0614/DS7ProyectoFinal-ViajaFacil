@@ -46,9 +46,9 @@ function NavBar() {
         <nav className="nav-links">
           {firstName ? (
             <>
-              <span className="text-white text-sm" style={{ marginRight: '16px' }}>
+              <Link to="/profile" className="text-white text-sm" style={{ marginRight: '16px' }}>
                 Hola {firstName}!
-              </span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="btn-primary"
