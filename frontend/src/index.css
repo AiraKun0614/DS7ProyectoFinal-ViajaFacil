@@ -1,13 +1,133 @@
 body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom, #E6F0FA, #F9FAFB);
+  color: #1F2937;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+h1, h2, h3 {
+  font-weight: 700;
+  color: #1E90FF;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background-color: #1E90FF;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: #1565C0;
+}
+
+.weather-info {
+  background-color: #E7F9E7;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #C6EBC6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  background-color: #1E90FF;
+  color: white;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-logo:hover {
+  color: #E3F2FD;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #1E90FF;
+  box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+}
+
+.form-label {
+  display: block;
+  color: #1F2937;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.error {
+  color: #EF4444;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 16px;
+  }
+  .nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .nav-links {
+    flex-direction: column;
+    gap: 8px;
+  }
 }

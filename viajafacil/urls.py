@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from tourismapp.views import DestinationViewSet, RegisterView, LoginView
+from tourismapp.views import DestinationViewSet, RegisterView, LoginView, UserView
 from django.views.generic import TemplateView
 
 
@@ -33,4 +33,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name= 'index.html')),    
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/login/', LoginView.as_view(), name='login'),
+    path('api/user/', UserView.as_view(), name='user'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
